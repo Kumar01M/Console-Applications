@@ -1,55 +1,34 @@
 package manage;
 
 public class Innings {
-
-	Player striker;
-	Player nonStriker;
-	Player bowler;
-
-	int score;
-	int fallOfWickets;
-	int thisOver;
-	int balls;
-	int extras;
-
-	static int noOfOvers;
-	static boolean chase = false;
-	static int total;
-
-	int nextBatsman = 0;
-	int nextBowler = 10;
-
-	boolean maiden = true;
-	boolean strikeRotated = false;
-
-	Team battingTeam;
-	Team bowlingTeam;
-
+	private Player striker, nonStriker, bowler;
+	private int score, fallOfWickets, currentOver, balls, extras;
+	private static int noOfOvers;
+	private static boolean chase = false;
+	private static int total;
+	private int nextBatsman = 0, nextBowler = 10;
+	private boolean maiden = true, strikeRotated = false;
+	private Team battingTeam, bowlingTeam;
 	static {
-		System.out.print("Enter Number of Overs: ");
-		noOfOvers = Scorecard.in.nextInt();
-		Scorecard.in.nextLine();
+		System.out.print("Enter number of overs: ");
+		noOfOvers = Integer.parseInt(Main.in.nextLine());
 	}
 
-	void begin(Team battingTeam, Team bowlingTeam) {
-
+	public void begin(Team battingTeam, Team bowlingTeam) {
 		this.battingTeam = battingTeam;
 		this.bowlingTeam = bowlingTeam;
-
 		striker = battingTeam.teamList.get(nextBatsman);
 		nonStriker = battingTeam.teamList.get(++nextBatsman);
-
 		bowler = bowlingTeam.teamList.get(nextBowler--);
-
-		while (thisOver != noOfOvers && fallOfWickets != 10) {
+		while (currentOver != noOfOvers && fallOfWickets != 10) {
 			System.out.println();
 			scorecardUpdate();
-
-			System.out.println(
-					" [0] Dot ball\t\t[7]  Bold \t\t[13] Wide \n [1] 1 run\t\t[8]  Caught \t\t[14] No-Ball \n [2] 2 runs\t\t[9]  Stumped \t\t[ 5] 5 runs (Penalty/Overthrow)\n [3] 3 runs\t\t[10] LBW \n [4] Four\t\t[11] Run-Out \n [6] Six\t\t[12] Mankad \n");
+			System.out
+					.println(" [0] Dot ball\t\t[7]  Bold \t\t[13] Wide \n [1] 1 run\t\t[8]  Caught \t\t[14] No-Ball \n "
+							+ "[2] 2 runs\t\t[9]  Stumped \t\t[ 5] 5 runs (Penalty/Overthrow)\n [3] 3 runs\t\t[10] LBW \n"
+							+ " [4] Four\t\t[11] Run-Out \n [6] Six\t\t[12] Mankad \n");
 			System.out.print("\n->>");
-			int hit = Scorecard.in.nextInt();
-
+			int hit = Integer.parseInt(Main.in.nextLine());
 			switch (hit) {
 			case 0:
 				addRuns(0);
@@ -73,38 +52,39 @@ public class Innings {
 				addRuns(6);
 				break;
 			case 7:
-				striker.takenBy = bowler.playerName;
-				striker.modeOfOut = 'B';
+				striker.setTakenBy(bowler.getPlayerName());
+				striker.setModeOfOut('B');
 				removePlayer(hit);
 				break;
 			case 8:
-				striker.takenBy = bowler.playerName;
-				striker.modeOfOut = 'C';
+				striker.setTakenBy(bowler.getPlayerName());
+				striker.setModeOfOut('C');
 				caughtStumped();
 				removePlayer(hit);
 				break;
 			case 9:
-				striker.takenBy = bowler.playerName;
-				striker.modeOfOut = 'S';
+				striker.setTakenBy(bowler.getPlayerName());
+				striker.setModeOfOut('S');
 				caughtStumped();
 				removePlayer(hit);
 				break;
 			case 10:
-				striker.takenBy = bowler.playerName;
-				striker.modeOfOut = 'L';
+				striker.setTakenBy(bowler.getPlayerName());
+				striker.setModeOfOut('L');
 				removePlayer(hit);
 				break;
 			case 11:
 				removePlayer(hit);
 				break;
 			case 12:
-				striker.takenBy = bowler.playerName;
-				nonStriker.modeOfOut = 'M';
+				striker.setTakenBy(bowler.getPlayerName());
+				nonStriker.setModeOfOut('M');
 				removePlayer(hit);
 				break;
 			case 13:
 				score++;
-				bowler.runsGiven++;
+				extras++;
+				bowler.setRunsGiven(1);
 				break;
 			case 14:
 				noBall();
@@ -113,85 +93,73 @@ public class Innings {
 				System.out.println("Invalid Input");
 				break;
 			}
-			bowler.ballsBowled++;
-
+			if(fallOfWickets==10)break;
+			bowler.setBallsBowled(1);
 			if (hit != 0 || (hit < 7 && hit < 11))
 				maiden = false;
-
 			if (balls == 6) {
-				thisOver += 1;
+				currentOver += 1;
 				rotateStrike();
-
 				if (maiden)
-					bowler.maidenOvers++;
+					bowler.setMaidenOvers((byte) 1);
 				if (nextBowler < 5)
 					nextBowler = 10;
-
-				bowler.oversBowled++;
+				bowler.setOversBowled(1);
 				bowler = bowlingTeam.teamList.get(nextBowler--);
-
 				balls = 0;
 				maiden = true;
 			}
-
-			if (chase) {
-				if (score > total)
-					scorecardUpdate();
-				scorecardUpdate(battingTeam);
+			if (chase && (score > total)) {
+				scorecardUpdate();
+				result(battingTeam);
+				break;
 			}
 		}
-
 		if (chase) {
 			if (score == total)
 				System.out.println("Match DRAW");
 			else
-				scorecardUpdate(bowlingTeam);
+				result(bowlingTeam);
 		}
-
 		chase = true;
 		total = score;
-
 	}
 
-	void scorecardUpdate() {
-
-		System.out.println("_______________________________________________________________________________\n");
-		System.out.println("S::");
+	private void scorecardUpdate() {
+		System.out.println("_______________________________________________________________________________");
+		System.out.printf("S::\t\t%S vs %S\t(%d overs)\n", battingTeam.teamName, bowlingTeam.teamName, noOfOvers);
 		if (strikeRotated == false)
 			System.out.printf("C::\t%3.3S %d/%d\t\t%s %d(%d)*\t%s %d(%d)\n", battingTeam.teamName, score, fallOfWickets,
-					striker.playerName, striker.runsScored, striker.ballsPlayed, nonStriker.playerName,
-					nonStriker.runsScored, nonStriker.ballsPlayed);
+					striker.getPlayerName(), striker.getRunsScored(), striker.getBallsPlayed(),
+					nonStriker.getPlayerName(), nonStriker.getRunsScored(), nonStriker.getBallsPlayed());
 		else
-			System.out.printf("C::\t%3.3S %d/%d\t\t%s %d(%d)*\t%s %d(%d)\n", battingTeam.teamName, score, fallOfWickets,
-					nonStriker.playerName, nonStriker.runsScored, nonStriker.ballsPlayed, striker.playerName,
-					striker.runsScored, striker.ballsPlayed);
+			System.out.printf("C::\t%3.3S %d/%d\t\t%s %d(%d)\t%s %d(%d)*\n", battingTeam.teamName, score, fallOfWickets,
+					nonStriker.getPlayerName(), nonStriker.getRunsScored(), nonStriker.getBallsPlayed(),
+					striker.getPlayerName(), striker.getRunsScored(), striker.getBallsPlayed());
+		System.out.printf("O:: \t%3.3S %d.%d Overs \t\t%s %d-%d (%d.%d)\n", bowlingTeam.teamName, currentOver, balls,
+				bowler.getPlayerName(), bowler.getWicketsTaken(), bowler.getRunsGiven(), bowler.getOversBowled(),
+				bowler.getBallsBowled());
+		if (chase == false && currentOver >= 1)
+			System.out.printf("R::\t Run rate - current: %.2f\n", (float) score / (float) (currentOver));
 
-		System.out.printf("O:: \t%3.3S %d.%d Overs \t\t%s %d-%d (%d.%d)\n", bowlingTeam.teamName, thisOver, balls,
-				bowler.playerName, bowler.wicketsTaken, bowler.runsGiven, bowler.oversBowled, bowler.ballsBowled);
-
-		if (chase == false && thisOver >= 1)
-			System.out.printf("R::\t Run rate - current: %.2f\n", (float) score / (float) (thisOver));
-		
-		else if (thisOver >= 1)
-			System.out.printf("R::\t Run rate - current: %.2f  required: %.2f\n", (float) score / (float) thisOver,
-					(float) total - score / (float) noOfOvers - thisOver);
-	
+		else if (currentOver >= 1 && currentOver%2!=0)
+			System.out.printf("R::\t Run rate - current: %.2f  required: %.2f  extras: %d\n", (float) score / (float) currentOver,
+					(float) total - score / (float) noOfOvers - currentOver, extras);
 		else
-			System.out.println("R:: ");
-
-		if (chase == true)
-			System.out.printf("E:: Total %d\t\t To win %d needed of %d balls.\n",total, total-score+1, (noOfOvers-thisOver)*6 + (6- balls));
+			System.out.printf("R:: \t\textras: %d\n", extras);
+		if (chase == true && currentOver%2==0)
+			System.out.printf("E:: Total %d\t\t To win %d needed of %d balls.\n", total, total - score + 1,
+					(noOfOvers - currentOver) * 6 + (6 - balls));
 		else
-			System.out.println("E::");
+			System.out.println("E:: ");
 		System.out.println("________________________________________________________________________________");
-
 	}
 
-	void scorecardUpdate(Team name) {
+	private void result(Team name) {
 		System.out.println(name.teamName.toUpperCase() + " WON THE MATCH ");
 	}
 
-	void rotateStrike() {
+	private void rotateStrike() {
 		Player temp = striker;
 		striker = nonStriker;
 		nonStriker = temp;
@@ -201,123 +169,122 @@ public class Innings {
 			strikeRotated = false;
 	}
 
-	void addRuns(int runs) {
+	private void addRuns(int runs) {
 		score += runs;
-		striker.runsScored += runs;
-		striker.ballsPlayed++;
-		bowler.runsGiven += runs;
+		striker.setRunsScored(runs);
+		striker.setBallsPlayed(1);
+		bowler.setRunsGiven(runs);
 		if (runs == 1 || runs == 3)
 			rotateStrike();
 		else if (runs == 5) {
 			System.out.println(" [0] Penalty [1] Overthrow ?");
-			if (Scorecard.in.nextInt() == 1)
+			if (Integer.parseInt(Main.in.nextLine()) == 1)
 				rotateStrike();
 		}
 		balls++;
 	}
 
-	void removePlayer(int wicket) {
+	private void removePlayer(int wicket) {
 		balls++;
-		if (fallOfWickets != 10 && wicket != 12 && wicket != 11) {
-			striker.ballsPlayed++;
-			striker.takenBy = bowler.playerName;
+		if (fallOfWickets != 9 && wicket != 12 && wicket != 11) {
+			striker.setBallsPlayed(1);
+			striker.setTakenBy(bowler.getPlayerName());
 			striker = battingTeam.teamList.get(++nextBatsman);
-			bowler.wicketsTaken++;
+			bowler.setWicketsTaken((byte) 1);
 		}
-		if (fallOfWickets != 10 && wicket == 12) {
+		if (fallOfWickets != 9 && wicket == 12) {
 			balls--;
-			nonStriker.takenBy = bowler.playerName;
+			nonStriker.setTakenBy(bowler.getPlayerName());
 			nonStriker = battingTeam.teamList.get(++nextBatsman);
-			bowler.wicketsTaken++;
+			bowler.setWicketsTaken((byte) 1);
 		}
-		if (fallOfWickets != 10 && wicket == 11) {
+		if (fallOfWickets != 9 && wicket == 11) {
 			System.out.print("[0] Striker out  [1] Non-striker out");
-			int choice = Scorecard.in.nextInt();
+			int choice = Integer.parseInt(Main.in.nextLine());
 			System.out.print("Runs >> ");
-			int runs = Scorecard.in.nextInt();
+			int runs = Integer.parseInt(Main.in.nextLine());
 			score += runs;
-			striker.runsScored += runs;
-			bowler.runsGiven += runs;
-			striker.ballsPlayed++;
+			striker.setRunsScored(runs);
+			bowler.setRunsGiven(runs);
+			striker.setBallsPlayed(1);
 			System.out.println("Run-Out By");
 			Team.displayPlayers(bowlingTeam.teamList);
-			int field = Integer.parseInt(Scorecard.in.nextLine());
+			int field = Integer.parseInt(Main.in.nextLine());
 			if (choice == 0 && runs % 2 == 0) {
-				striker.modeOfOut = 'R';
-				striker.fieldedBy = battingTeam.teamList.get(field).playerName;
+				striker.setModeOfOut('R');
+				striker.setFieldedBy(battingTeam.teamList.get(field).getPlayerName());
 				striker = battingTeam.teamList.get(++nextBatsman);
 			} else if (choice == 0) {
-				striker.modeOfOut = 'R';
-				striker.fieldedBy = battingTeam.teamList.get(field).playerName;
+				striker.setModeOfOut('R');
+				striker.setFieldedBy(battingTeam.teamList.get(field).getPlayerName());
 				striker = battingTeam.teamList.get(++nextBatsman);
 				rotateStrike();
 			} else if (runs % 2 == 0) {
-				nonStriker.modeOfOut = 'R';
-				nonStriker.fieldedBy = battingTeam.teamList.get(field).playerName;
+				nonStriker.setModeOfOut('R');
+				nonStriker.setFieldedBy(battingTeam.teamList.get(field).getPlayerName());
 				nonStriker = battingTeam.teamList.get(++nextBatsman);
 			} else {
-				nonStriker.modeOfOut = 'R';
-				nonStriker.fieldedBy = battingTeam.teamList.get(field).playerName;
+				nonStriker.setModeOfOut('R');
+				nonStriker.setFieldedBy(battingTeam.teamList.get(field).getPlayerName());
 				nonStriker = battingTeam.teamList.get(++nextBatsman);
 				rotateStrike();
 			}
-
 		}
 		fallOfWickets++;
-		if (fallOfWickets == 10)
-			;
+		if (fallOfWickets == 10) {
+			System.out.print("INNINGS OVER");
+		}
 	}
 
-	void caughtStumped() {
-		if (striker.modeOfOut == 'C') {
+	private void caughtStumped() {
+		if (striker.getModeOfOut() == 'C') {
 			System.out.println("Caught by: ");
 			int choice = 0;
-			Team.displayPlayers(battingTeam.teamList);
-			choice = Scorecard.in.nextInt();
-			striker.fieldedBy = bowlingTeam.teamList.get(choice).playerName;
-		} else if (striker.modeOfOut == 'S') {
+			Team.displayPlayers(bowlingTeam.teamList);
+			choice = Integer.parseInt(Main.in.nextLine());
+			striker.setFieldedBy(bowlingTeam.teamList.get(choice).getPlayerName());
+		} else if (striker.getModeOfOut() == 'S') {
 			int choice = 0;
 			for (Player player : bowlingTeam.teamList) {
-				if (player.wicketKeeper) {
-					striker.fieldedBy = bowlingTeam.teamList.get(choice++).playerName;
+				if (player.isWicketKeeper()) {
+					striker.setFieldedBy(bowlingTeam.teamList.get(choice).getPlayerName());
 				}
 			}
 		}
 	}
 
-	void noBall() {
+	private void noBall() {
 		score++;
-		bowler.runsGiven++;
-
+		bowler.setRunsGiven(1);
 		System.out.println("Runs Scored in NO-BALL: ");
-		int noBallRuns = Scorecard.in.nextInt();
-		striker.runsScored += noBallRuns;
+		int noBallRuns = Integer.parseInt(Main.in.nextLine());
+		striker.setRunsScored(noBallRuns);
 		score += noBallRuns;
 		if (noBallRuns == 1 || noBallRuns == 3) {
-			striker.ballsPlayed++;
+			striker.setBallsPlayed(1);
 			rotateStrike();
 		} else if (noBallRuns != 0)
-			striker.ballsPlayed++;
+			striker.setBallsPlayed(1);
 		freeHit();
-		bowler.runsGiven += noBallRuns;
+		bowler.setRunsGiven(noBallRuns);
 	}
 
-	void freeHit() {
+	private void freeHit() {
 		System.out.print("Free-hit runs:[1-6] Runs [7] Wide  [8] No-Ball again");
-		int freeHitRun = Scorecard.in.nextInt();
+		int freeHitRun = Integer.parseInt(Main.in.nextLine());
 		if (freeHitRun == 7) {
 			score++;
-			bowler.runsGiven++;
+			bowler.setRunsGiven(1);
 			freeHit();
 		} else if (freeHitRun == 8) {
 			noBall();
 		} else {
 			score += freeHitRun;
-			striker.runsScored += freeHitRun;
-			striker.ballsPlayed++;
-			bowler.runsGiven++;
+			striker.setRunsScored(freeHitRun);
+			;
+			striker.setBallsPlayed(1);
+			bowler.setRunsGiven(1);
 			balls++;
 		}
 	}
-
 }

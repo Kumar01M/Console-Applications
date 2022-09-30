@@ -1,42 +1,42 @@
 package manage;
-
 import java.util.ArrayList;
 
-class Team {
+public class Team {
 	String teamName;
 	ArrayList<Player> teamList = new ArrayList<>();
-	int teamPlayers = 11;
-	
+	int teamPlayers = 0;
+
 	Team() {
 		Game.teams++;
-		System.out.print("Enter team "+Game.teams+" name: ");
-		teamName = Scorecard.in.nextLine();
+		System.out.print("Enter team name "+ Game.teams+": " );
+		teamName = Main.in.nextLine();
+		addTeamMembers();
 	}
-	
-	void addTeamMembers() {
-		System.out.println("Enter "+teamName+" players list");
-		while(teamPlayers-- != 0) {
+
+	private void addTeamMembers() {
+		System.out.println("Enter " + teamName + " players list");
+		while (teamPlayers != 11) {
 			teamList.add(new Player());
+			teamList.get(teamPlayers++).setPlayerName(Main.in.nextLine());
 		}
-		
 		System.out.println("Choose Captain");
 		displayPlayers(teamList);
-		teamList.get(Integer.parseInt(Scorecard.in.nextLine())).captain = true;
-		
-		
+		teamList.get(Integer.parseInt(Main.in.nextLine())).setCaptain(true);
 		System.out.println("Choose Wicket Keeper");
 		displayPlayers(teamList);
-		teamList.get(Integer.parseInt(Scorecard.in.nextLine())).wicketKeeper = false;
-		
-		
+		teamList.get(Integer.parseInt(Main.in.nextLine())).setWicketKeeper(true);
 	}
+
 	public static void displayPlayers(ArrayList<Player> team) {
 		int choice = 0;
-		for(Player player: team) {
-			System.out.print("["+ (choice++) +"] "+  player.playerName);
-			if(player.captain)System.out.print(" (c)");
-			if(player.wicketKeeper)System.out.print(" (wk)");
-			System.out.println();			
+		for (Player player : team) {
+			System.out.print("[" + (choice++) + "] " + player.getPlayerName());
+			if (player.isCaptain())
+				System.out.print(" (c)");
+			if (player.isWicketKeeper())
+				System.out.print(" (wk)");
+			System.out.println();
 		}
+		System.out.print("\n>>");
 	}
 }
