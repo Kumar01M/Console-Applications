@@ -10,8 +10,8 @@ public class Innings {
 	private boolean maiden = true, strikeRotated = false;
 	private Team battingTeam, bowlingTeam;
 	static {
-		System.out.print("Enter number of overs: ");
-		noOfOvers = Integer.parseInt(Main.in.nextLine());
+		System.out.print("\n\tEnter number of overs[1-50]: ");
+		noOfOvers = Validate.validateInteger(50);
 	}
 
 	public void begin(Team battingTeam, Team bowlingTeam) {
@@ -23,12 +23,11 @@ public class Innings {
 		while (currentOver != noOfOvers && fallOfWickets != 10) {
 			System.out.println();
 			scorecardUpdate();
-			System.out
-					.println(" [0] Dot ball\t\t[7]  Bold \t\t[13] Wide \n [1] 1 run\t\t[8]  Caught \t\t[14] No-Ball \n "
+			System.out.println(" [0] Dot ball\t\t[7]  Bold \t\t[13] Wide \n [1] 1 run\t\t[8]  Caught \t\t[14] No-Ball \n "
 							+ "[2] 2 runs\t\t[9]  Stumped \t\t[ 5] 5 runs (Penalty/Overthrow)\n [3] 3 runs\t\t[10] LBW \n"
 							+ " [4] Four\t\t[11] Run-Out \n [6] Six\t\t[12] Mankad \n");
 			System.out.print("\n->>");
-			int hit = Integer.parseInt(Main.in.nextLine());
+			int hit = Validate.validateInteger(14);
 			switch (hit) {
 			case 0:
 				addRuns(0);
@@ -93,7 +92,8 @@ public class Innings {
 				System.out.println("Invalid Input");
 				break;
 			}
-			if(fallOfWickets==10)break;
+			if (fallOfWickets == 10)
+				break;
 			bowler.setBallsBowled(1);
 			if (hit != 0 || (hit < 7 && hit < 11))
 				maiden = false;
@@ -112,7 +112,6 @@ public class Innings {
 			if (chase && (score > total)) {
 				scorecardUpdate();
 				result(battingTeam);
-				break;
 			}
 		}
 		if (chase) {
@@ -129,26 +128,26 @@ public class Innings {
 		System.out.println("_______________________________________________________________________________");
 		System.out.printf("S::\t\t%S vs %S\t(%d overs)\n", battingTeam.teamName, bowlingTeam.teamName, noOfOvers);
 		if (strikeRotated == false)
-			System.out.printf("C::\t%3.3S %d/%d\t\t%s %d(%d)*\t%s %d(%d)\n", battingTeam.teamName, score, fallOfWickets,
+			System.out.printf("C:: %3.3S %d/%d\t\t%s %d(%d)*\t%s %d(%d)\n", battingTeam.teamName, score, fallOfWickets,
 					striker.getPlayerName(), striker.getRunsScored(), striker.getBallsPlayed(),
 					nonStriker.getPlayerName(), nonStriker.getRunsScored(), nonStriker.getBallsPlayed());
 		else
-			System.out.printf("C::\t%3.3S %d/%d\t\t%s %d(%d)\t%s %d(%d)*\n", battingTeam.teamName, score, fallOfWickets,
+			System.out.printf("C:: %3.3S %d/%d\t\t%s %d(%d)\t%s %d(%d)*\n", battingTeam.teamName, score, fallOfWickets,
 					nonStriker.getPlayerName(), nonStriker.getRunsScored(), nonStriker.getBallsPlayed(),
 					striker.getPlayerName(), striker.getRunsScored(), striker.getBallsPlayed());
-		System.out.printf("O:: \t%3.3S %d.%d Overs \t\t%s %d-%d (%d.%d)\n", bowlingTeam.teamName, currentOver, balls,
+		System.out.printf("O:: %3.3S %d.%d Overs \t\t%s %d-%d (%d.%d)\n", bowlingTeam.teamName, currentOver, balls,
 				bowler.getPlayerName(), bowler.getWicketsTaken(), bowler.getRunsGiven(), bowler.getOversBowled(),
 				bowler.getBallsBowled());
 		if (chase == false && currentOver >= 1)
-			System.out.printf("R::\t Run rate - current: %.2f\n", (float) score / (float) (currentOver));
-
-		else if (currentOver >= 1 && currentOver%2!=0)
-			System.out.printf("R::\t Run rate - current: %.2f  required: %.2f  extras: %d\n", (float) score / (float) currentOver,
-					(float) total - score / (float) noOfOvers - currentOver, extras);
+			System.out.printf("R:: Run rate - current: %.2f\n", (float) score / (float) (currentOver));
+		else if (currentOver >= 1 && currentOver % 2 != 0)
+			System.out.printf("R:: Run rate - current: %.2f  required: %.2f  extras: %d\n",
+					(float) score / (float) currentOver, (float) total - score / (float) noOfOvers - currentOver,
+					extras);
 		else
-			System.out.printf("R:: \t\textras: %d\n", extras);
-		if (chase == true && currentOver%2==0)
-			System.out.printf("E:: Total %d\t\t To win %d needed of %d balls.\n", total, total - score + 1,
+			System.out.printf("R:: \textras: %d\n", extras);
+		if (chase == true && currentOver % 2 == 0)
+			System.out.printf("E:: Total %d\t To win %d needed of %d balls.\n", total, total - score + 1,
 					(noOfOvers - currentOver) * 6 + (6 - balls));
 		else
 			System.out.println("E:: ");
@@ -178,7 +177,7 @@ public class Innings {
 			rotateStrike();
 		else if (runs == 5) {
 			System.out.println(" [0] Penalty [1] Overthrow ?");
-			if (Integer.parseInt(Main.in.nextLine()) == 1)
+			if (Validate.validateInteger(1) == 1)
 				rotateStrike();
 		}
 		balls++;
@@ -200,16 +199,16 @@ public class Innings {
 		}
 		if (fallOfWickets != 9 && wicket == 11) {
 			System.out.print("[0] Striker out  [1] Non-striker out");
-			int choice = Integer.parseInt(Main.in.nextLine());
+			int choice = Validate.validateInteger(1);
 			System.out.print("Runs >> ");
-			int runs = Integer.parseInt(Main.in.nextLine());
+			int runs = Validate.validateInteger(1);
 			score += runs;
 			striker.setRunsScored(runs);
 			bowler.setRunsGiven(runs);
 			striker.setBallsPlayed(1);
 			System.out.println("Run-Out By");
 			Team.displayPlayers(bowlingTeam.teamList);
-			int field = Integer.parseInt(Main.in.nextLine());
+			int field = Validate.validateInteger(10);
 			if (choice == 0 && runs % 2 == 0) {
 				striker.setModeOfOut('R');
 				striker.setFieldedBy(battingTeam.teamList.get(field).getPlayerName());
@@ -241,7 +240,7 @@ public class Innings {
 			System.out.println("Caught by: ");
 			int choice = 0;
 			Team.displayPlayers(bowlingTeam.teamList);
-			choice = Integer.parseInt(Main.in.nextLine());
+			choice = Validate.validateInteger(10);
 			striker.setFieldedBy(bowlingTeam.teamList.get(choice).getPlayerName());
 		} else if (striker.getModeOfOut() == 'S') {
 			int choice = 0;
@@ -257,7 +256,7 @@ public class Innings {
 		score++;
 		bowler.setRunsGiven(1);
 		System.out.println("Runs Scored in NO-BALL: ");
-		int noBallRuns = Integer.parseInt(Main.in.nextLine());
+		int noBallRuns = Validate.validateInteger(6);
 		striker.setRunsScored(noBallRuns);
 		score += noBallRuns;
 		if (noBallRuns == 1 || noBallRuns == 3) {
@@ -271,7 +270,7 @@ public class Innings {
 
 	private void freeHit() {
 		System.out.print("Free-hit runs:[1-6] Runs [7] Wide  [8] No-Ball again");
-		int freeHitRun = Integer.parseInt(Main.in.nextLine());
+		int freeHitRun = Validate.validateInteger(8);
 		if (freeHitRun == 7) {
 			score++;
 			bowler.setRunsGiven(1);

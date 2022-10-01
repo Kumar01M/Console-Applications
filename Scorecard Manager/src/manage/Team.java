@@ -6,29 +6,30 @@ public class Team {
 	ArrayList<Player> teamList = new ArrayList<>();
 	int teamPlayers = 0;
 
-	Team() {
+	public Team() {
 		Game.teams++;
-		System.out.print("Enter team name "+ Game.teams+": " );
-		teamName = Main.in.nextLine();
-		addTeamMembers();
+		System.out.print("\nTeam "+ Game.teams+": " );
+		teamName = Validate.validateName();
+		addPlayers();
 	}
 
-	private void addTeamMembers() {
-		System.out.println("Enter " + teamName + " players list");
+	private void addPlayers() {
+		System.out.println("\n\t "+ teamName.toUpperCase() + " - player's list");
 		while (teamPlayers != 11) {
 			teamList.add(new Player());
-			teamList.get(teamPlayers++).setPlayerName(Main.in.nextLine());
+			teamList.get(teamPlayers++).setPlayerName(Validate.validateName());
 		}
-		System.out.println("Choose Captain");
+		System.out.println("\n\tChoose "+teamName.toUpperCase()+" Captain\n");
 		displayPlayers(teamList);
-		teamList.get(Integer.parseInt(Main.in.nextLine())).setCaptain(true);
-		System.out.println("Choose Wicket Keeper");
+		teamList.get(Validate.validateInteger(10)).setCaptain(true);
+		System.out.println("\n\tChoose "+teamName.toUpperCase()+" Wicket Keeper");
 		displayPlayers(teamList);
-		teamList.get(Integer.parseInt(Main.in.nextLine())).setWicketKeeper(true);
+		teamList.get(Validate.validateInteger(10)).setWicketKeeper(true);
 	}
 
 	public static void displayPlayers(ArrayList<Player> team) {
 		int choice = 0;
+		System.out.println();
 		for (Player player : team) {
 			System.out.print("[" + (choice++) + "] " + player.getPlayerName());
 			if (player.isCaptain())
@@ -37,6 +38,6 @@ public class Team {
 				System.out.print(" (wk)");
 			System.out.println();
 		}
-		System.out.print("\n>>");
+		System.out.print(">>");
 	}
 }

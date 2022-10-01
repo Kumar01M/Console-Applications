@@ -7,22 +7,22 @@ public class Game {
 	Innings firstInnings = new Innings();
 	Innings secondInnings = new Innings();
 
-	void toss() {
-		System.out.printf("TOSS" + " won by [1] %s [2] %s : ", teamOne.teamName, teamTwo.teamName);
-		int toss = Integer.parseInt(Main.in.nextLine());
+	public void toss() {
+		System.out.printf("TOSS" + " won by [0] %s [1] %s : ", teamOne.teamName, teamTwo.teamName);
+		int toss = Validate.validateInteger(1);
 		if (toss == 1) {
-			System.out.print(
-					teamOne.teamName + " have won the toss" + "\n" + teamOne.teamName + " [ Choose to: 1.BAT 2.BOWL ] : ");
+			System.out.print(teamOne.teamName + " have won the toss" + "\n" + teamOne.teamName
+					+ " Choose to: [0] BAT [1] BOWL : ");
 			chooseTo(teamOne, teamTwo);
 		} else {
 			System.out.print(teamTwo.teamName + " have won the toss" + "\n" + teamTwo.teamName
-					+ " [ Choose to: 1.BAT 2.BOWL ] : ");
+					+ " Choose to: [0] BAT [1] BOWL  : ");
 			chooseTo(teamTwo, teamOne);
 		}
 	}
 
-	void chooseTo(Team tossWinner, Team tossLoser) {
-		int choice = Integer.parseInt(Main.in.nextLine());
+	private void chooseTo(Team tossWinner, Team tossLoser) {
+		int choice = Validate.validateInteger(1);
 		if (choice == 1) {
 			firstInnings.begin(tossWinner, tossLoser);
 			secondInnings.begin(tossLoser, tossWinner);
