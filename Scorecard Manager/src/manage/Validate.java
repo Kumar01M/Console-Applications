@@ -25,7 +25,6 @@ public class Validate {
 			try {
 				value = Main.in.nextLine();
 				String copy = value.replaceAll("\\s|\\d", "");
-				System.out.print("copy"+copy+"copy");
 				if(value.equals("")||copy.equals("")) {
 					throw new Exception();
 				}

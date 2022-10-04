@@ -92,8 +92,7 @@ public class Innings {
 				System.out.println("Invalid Input");
 				break;
 			}
-			if (fallOfWickets == 10)
-				break;
+			
 			bowler.setBallsBowled(1);
 			if (hit != 0 || (hit < 7 && hit < 11))
 				maiden = false;
@@ -109,16 +108,20 @@ public class Innings {
 				balls = 0;
 				maiden = true;
 			}
-			if (chase && (score > total)) {
+			
+			if(chase) {
 				scorecardUpdate();
-				result(battingTeam);
+				if(score>total) {
+					scorecardUpdate();
+					result(battingTeam, bowlingTeam);
+				}
+				else if(score==total) {
+					System.out.println("Match DRAW");
+				}
+				else if(noOfOvers==currentOver||fallOfWickets==10){
+					result(bowlingTeam, battingTeam);
+				}
 			}
-		}
-		if (chase) {
-			if (score == total)
-				System.out.println("Match DRAW");
-			else
-				result(bowlingTeam);
 		}
 		chase = true;
 		total = score;
@@ -154,8 +157,12 @@ public class Innings {
 		System.out.println("________________________________________________________________________________");
 	}
 
-	private void result(Team name) {
-		System.out.println(name.teamName.toUpperCase() + " WON THE MATCH ");
+	private void result(Team winningTeam, Team losingTeam) {
+		if(winningTeam.equals(battingTeam))
+			System.out.println("\t\t"+winningTeam.teamName.toUpperCase() + " won by "+ (10-fallOfWickets) +"");
+		else
+			System.out.println("\t\t"+winningTeam.teamName.toUpperCase()+" won by "+ (total - score) +" runs");
+		summary(winningTeam, losingTeam);		
 	}
 
 	private void rotateStrike() {
@@ -285,5 +292,9 @@ public class Innings {
 			bowler.setRunsGiven(1);
 			balls++;
 		}
+	}
+	
+	private void summary(Team wTeam, Team lTeam) {
+		
 	}
 }

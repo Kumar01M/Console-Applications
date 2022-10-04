@@ -10,7 +10,7 @@ public class Game {
 	public void toss() {
 		System.out.printf("TOSS" + " won by [0] %s [1] %s : ", teamOne.teamName, teamTwo.teamName);
 		int toss = Validate.validateInteger(1);
-		if (toss == 1) {
+		if (toss == 0) {
 			System.out.print(teamOne.teamName + " have won the toss" + "\n" + teamOne.teamName
 					+ " Choose to: [0] BAT [1] BOWL : ");
 			chooseTo(teamOne, teamTwo);
@@ -23,10 +23,12 @@ public class Game {
 
 	private void chooseTo(Team tossWinner, Team tossLoser) {
 		int choice = Validate.validateInteger(1);
-		if (choice == 1) {
+		if (choice == 0) {
+			System.out.println("and chose to BAT first");
 			firstInnings.begin(tossWinner, tossLoser);
 			secondInnings.begin(tossLoser, tossWinner);
 		} else {
+			System.out.println("and chose to BOWL first");
 			firstInnings.begin(tossLoser, tossWinner);
 			secondInnings.begin(tossWinner, tossLoser);
 		}
