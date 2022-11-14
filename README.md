@@ -1,13 +1,13 @@
 # Console-Applications
 
-Flight Ticket Reservation
+Flight Ticket Reservation (Working)
 
-A console application to book flight tickets and do other operations.
+Flight ticket booking application.
 
 Scorecard Manager
 
-A cricket scorecard managing application to update scores to a to board.
+A cricket scorecard managing application to update scores in a scoreboard.
 
 Anonymous Q&A
 
-An user can ask questions and answer to questions by logging in but no information of user is shown.
+An user can ask his questions and also can answer to the questions .
