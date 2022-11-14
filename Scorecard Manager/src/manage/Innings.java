@@ -23,7 +23,8 @@ public class Innings {
 		while (currentOver != noOfOvers && fallOfWickets != 10) {
 			System.out.println();
 			scorecardUpdate();
-			System.out.println(" [0] Dot ball\t\t[7]  Bold \t\t[13] Wide \n [1] 1 run\t\t[8]  Caught \t\t[14] No-Ball \n "
+			System.out
+					.println(" [0] Dot ball\t\t[7]  Bold \t\t[13] Wide \n [1] 1 run\t\t[8]  Caught \t\t[14] No-Ball \n "
 							+ "[2] 2 runs\t\t[9]  Stumped \t\t[ 5] 5 runs (Penalty/Overthrow)\n [3] 3 runs\t\t[10] LBW \n"
 							+ " [4] Four\t\t[11] Run-Out \n [6] Six\t\t[12] Mankad \n");
 			System.out.print("\n->>");
@@ -92,7 +93,7 @@ public class Innings {
 				System.out.println("Invalid Input");
 				break;
 			}
-			
+
 			bowler.setBallsBowled(1);
 			if (hit != 0 || (hit < 7 && hit < 11))
 				maiden = false;
@@ -108,23 +109,23 @@ public class Innings {
 				balls = 0;
 				maiden = true;
 			}
-			
-			if(chase) {
+
+			if (chase) {
 				scorecardUpdate();
-				if(score>total) {
+				if (score > total) {
 					scorecardUpdate();
 					result(battingTeam, bowlingTeam);
-				}
-				else if(score==total) {
+				} else if (score == total) {
 					System.out.println("Match DRAW");
-				}
-				else if(noOfOvers==currentOver||fallOfWickets==10){
+				} else if (noOfOvers == currentOver || fallOfWickets == 10) {
 					result(bowlingTeam, battingTeam);
 				}
 			}
 		}
-		chase = true;
-		total = score;
+		if (!chase) {
+			chase = true;
+			total = score;
+		}
 	}
 
 	private void scorecardUpdate() {
@@ -158,11 +159,11 @@ public class Innings {
 	}
 
 	private void result(Team winningTeam, Team losingTeam) {
-		if(winningTeam.equals(battingTeam))
-			System.out.println("\t\t"+winningTeam.teamName.toUpperCase() + " won by "+ (10-fallOfWickets) +"");
+		if (winningTeam.equals(battingTeam))
+			System.out.println("\n\t\t" + winningTeam.teamName.toUpperCase() + " won by " + (10 - fallOfWickets) + "");
 		else
-			System.out.println("\t\t"+winningTeam.teamName.toUpperCase()+" won by "+ (total - score) +" runs");
-		summary(winningTeam, losingTeam);		
+			System.out.println("\n\t\t" + winningTeam.teamName.toUpperCase() + " won by " + (total - score) + " runs");
+		summary(winningTeam, losingTeam);
 	}
 
 	private void rotateStrike() {
@@ -218,27 +219,27 @@ public class Innings {
 			int field = Validate.validateInteger(10);
 			if (choice == 0 && runs % 2 == 0) {
 				striker.setModeOfOut('R');
-				striker.setFieldedBy(battingTeam.teamList.get(field).getPlayerName());
+				striker.setFieldedBy(bowlingTeam.teamList.get(field).getPlayerName());
 				striker = battingTeam.teamList.get(++nextBatsman);
 			} else if (choice == 0) {
 				striker.setModeOfOut('R');
-				striker.setFieldedBy(battingTeam.teamList.get(field).getPlayerName());
+				striker.setFieldedBy(bowlingTeam.teamList.get(field).getPlayerName());
 				striker = battingTeam.teamList.get(++nextBatsman);
 				rotateStrike();
 			} else if (runs % 2 == 0) {
 				nonStriker.setModeOfOut('R');
-				nonStriker.setFieldedBy(battingTeam.teamList.get(field).getPlayerName());
+				nonStriker.setFieldedBy(bowlingTeam.teamList.get(field).getPlayerName());
 				nonStriker = battingTeam.teamList.get(++nextBatsman);
 			} else {
 				nonStriker.setModeOfOut('R');
-				nonStriker.setFieldedBy(battingTeam.teamList.get(field).getPlayerName());
+				nonStriker.setFieldedBy(bowlingTeam.teamList.get(field).getPlayerName());
 				nonStriker = battingTeam.teamList.get(++nextBatsman);
 				rotateStrike();
 			}
 		}
 		fallOfWickets++;
 		if (fallOfWickets == 10) {
-			System.out.print("INNINGS OVER");
+			System.out.print("" + "n\t\tINNINGS OVER\n");
 		}
 	}
 
@@ -293,8 +294,37 @@ public class Innings {
 			balls++;
 		}
 	}
-	
-	private void summary(Team wTeam, Team lTeam) {
-		
+
+	private void summary(Team winningTeam, Team losingTeam) {
+		battingScorecard(losingTeam);
+		bowlingScorecard(winningTeam);
+		battingScorecard(winningTeam);
+		bowlingScorecard(losingTeam);
+	}
+
+	private void battingScorecard(Team batting) {
+		System.out.println(batting.teamName.toUpperCase());
+		System.out.println("+----------------------+----------+-------------------------------------------------+");
+		System.out.println("|   Batsmen Name       | Runs/Of  |            Wicket / Taken By                    |");
+		System.out.println("+----------------------+----------+-------------------------------------------------+");
+		for (Player player : batting.teamList) {
+			System.out.printf("| %-20s | %-3d(%-3d) | %c by %-20s %c %-20s|\n", player.getPlayerName(),
+					player.getRunsScored(), player.getBallsPlayed(), player.getModeOfOut(), player.getFieldedBy(),
+					(char) 223, player.getTakenBy());
+		}
+		System.out.println("+----------------------+---------+--------------------------------------------------+\n");
+	}
+
+	private void bowlingScorecard(Team bowling) {
+		System.out.println(bowling.teamName.toUpperCase());
+		System.out.println("\t\t+----------------------+---------+-----+");
+		System.out.println("\t\t|   Bowler Name        | Summary |  O  |");
+		System.out.println("\t\t+----------------------+---------+-----+");
+		for (int index = 10; index > 5; index--) {
+			Player player = bowling.teamList.get(index);
+			System.out.printf("\t\t| %-20s | %3d-%-3d | %-3d |\n", player.getPlayerName(), player.getWicketsTaken(),
+					player.getOversBowled(), player.getRunsGiven());
+		}
+		System.out.println("\t\t+---------------------+----------+-----+");
 	}
 }

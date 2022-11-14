@@ -5,7 +5,7 @@ public class Player {
 	private int runsScored, ballsPlayed, runsGiven, ballsBowled, oversBowled;
 	private boolean captain, wicketKeeper;
 	private char modeOfOut;
-	private String playerName, takenBy, fieldedBy;
+	private String playerName, takenBy = "", fieldedBy = "";
 
 	public byte getWicketsTaken() {
 		return wicketsTaken;

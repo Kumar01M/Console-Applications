@@ -19,11 +19,11 @@ public class Team {
 			teamList.add(new Player());
 			teamList.get(teamPlayers++).setPlayerName(Validate.validateName());
 		}
-		System.out.println("\n\tChoose "+teamName.toUpperCase()+" Captain\n");
 		displayPlayers(teamList);
+		System.out.print("\n\tChoose "+teamName.toUpperCase()+" Captain: ");
 		teamList.get(Validate.validateInteger(10)).setCaptain(true);
-		System.out.println("\n\tChoose "+teamName.toUpperCase()+" Wicket Keeper");
 		displayPlayers(teamList);
+		System.out.print("\n\tChoose "+teamName.toUpperCase()+" Wicket Keeper: ");
 		teamList.get(Validate.validateInteger(10)).setWicketKeeper(true);
 	}
 
@@ -38,6 +38,5 @@ public class Team {
 				System.out.print(" (wk)");
 			System.out.println();
 		}
-		System.out.print(">>");
 	}
 }
