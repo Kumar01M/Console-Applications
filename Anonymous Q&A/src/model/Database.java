@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Database {
 	
-	private static Database qaDb;
+	private static Database questionAndAnswerDB;
 	private  ArrayList<UserModel> userList;
 	private ArrayList<QuestionModel> questionList;
 	
@@ -14,10 +14,10 @@ public class Database {
 	}
 	
 	public static Database getInstance() {
-		if(qaDb==null) {
-			qaDb = new Database();
+		if(questionAndAnswerDB==null) {
+			questionAndAnswerDB = new Database();
 		}
-		return qaDb;
+		return questionAndAnswerDB;
 	}
 	
 	public ArrayList<UserModel> getUserList() {
@@ -38,18 +38,6 @@ public class Database {
 	
 	public ArrayList<QuestionModel> getQuestionList() {
 		return questionList;
-	}
-	
-	public int getQuestionListSize() {
-		return questionList.size();
-	}
-	
-	public QuestionModel getQuesFromList(int index) {
-		return questionList.get(index);
-	}
-	
-	public void addIntoQuestionList(QuestionModel Question) {
-		questionList.add(Question);
-	}
+	}	
 	
 }

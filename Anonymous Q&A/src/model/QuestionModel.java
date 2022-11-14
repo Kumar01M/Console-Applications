@@ -8,14 +8,13 @@ public class QuestionModel {
 	private String question;
 	public static int qId;
 	private int qNo;
-	private ArrayList<String> answers;
+	private ArrayList<String> answers = new ArrayList<>();;
 	private String timeAndDate;
 	private int like;
 	private LocalDateTime dtObj = LocalDateTime.now();
 	private DateTimeFormatter formatObj = DateTimeFormatter.ofPattern("dd-MMM HH:mm");
 
 	public QuestionModel() {
-		answers = new ArrayList<>();
 		setTimeAndDate();
 		setqNo();
 	}
@@ -41,24 +40,15 @@ public class QuestionModel {
 	public static int getqId() {
 		return qId;
 	}
-	public static void setqId() {
-		QuestionModel.qId++;
-	}
 	public int getqNo() {
 		return qNo;
 	}
 	public void setqNo() {
-		this.qNo = qId;
+		this.qNo = qId++;
 	}
 
 	//answers 
 	public ArrayList<String> getAnswers() {
 		return answers;
-	}
-	public void addAnswers(String ans) {
-		answers.add(ans);
-	}
-	public String getAnswers(int index) {
-		return answers.get(index);
 	}
 }

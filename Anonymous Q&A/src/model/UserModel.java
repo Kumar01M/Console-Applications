@@ -7,12 +7,9 @@ public class UserModel {
 	private String password;
 	private String dateOfBirth;
 	private String email;
-	private ArrayList<QuestionModel> questions;
+	private ArrayList<Integer> qNo = new ArrayList<>();
 	private int atQuestion;
-	
-	public UserModel() {
-		questions = new ArrayList<>();
-	}
+
 	public String getUserName() {
 		return userName;
 	}
@@ -43,15 +40,10 @@ public class UserModel {
 	public int getAtQuestion() {
 		return atQuestion;
 	}
-	//questions
-	public void addQuestions(QuestionModel ques) {
-		questions.add(ques);
+	public ArrayList<Integer> getqNo() {
+		return qNo;
 	}
-	public void getQuestion(int index) {
-		questions.get(index);
-	}
-	
-	public void viewAtQuestion() {
-		Database.getInstance().getQuesFromList(atQuestion);
+	public void setqNo(ArrayList<Integer> qNo) {
+		this.qNo = qNo;
 	}
 }
