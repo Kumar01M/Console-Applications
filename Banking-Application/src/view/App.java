@@ -35,7 +35,6 @@ public class App {
 				System.exit(0);
 			default:
 				System.out.println("Invalid input, enter valid choice");
-				break;
 			}
 		}
 	}

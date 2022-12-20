@@ -19,8 +19,7 @@ public class TransactionsView {
 	
 	public void transactionsMenu(CustomerModel customer, AccountModel account) {
 		System.out.println("Welcome "+customer.getUsername()+ "\tAccount balance: " +account.getAccountBalance());
-		boolean menu = true;
-		while (menu) {
+		while (true) {
 			System.out.println("Select operation");
 			int choice = input.inputChoice("\t{1} Withdraw Cash\n\t{2} Cash Deposit\n\t{3} Account to Account Transfer\n\t"
 										 + "{4} Transaction History");
@@ -38,7 +37,7 @@ public class TransactionsView {
 				controller.transactionHistory(account);
 				break;
 			default:
-				menu = false;
+				System.exit(0);
 			}
 		}
 	}
