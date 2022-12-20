@@ -17,9 +17,10 @@ public class UserPage {
 	
 	public void menu() {
 		System.out.println("Welcome to Indian Airways.");
-		while(true) {
+		boolean openMenu = true;
+		while(openMenu) {
 			System.out.println("(1.Book Tickets | 2.Flight Routes | 3.Check Ticket Status | 4.Search For Passenger"
-					+ " | 5.Bookings List | 6.Cancel Tickets)");
+					+ " | 5.Bookings List | 6.Cancel Tickets | 7.Exit)");
 			int choice = in.inputInteger();
 			switch(choice){
 			case 1:
@@ -36,6 +37,12 @@ public class UserPage {
 			case 5:
 				break;
 			case 6:
+				break;
+			case 7:
+				openMenu = false;
+				break;
+			default:
+				System.out.println("Invalid Input Click (1-7)");
 				break;
 			}
 		}
