@@ -1,6 +1,6 @@
 # Console-Applications
 
-Flight Ticket Reservation (Working)
+Flight Ticket Reservation
   Flight ticket booking application.
 
 Scorecard Manager
