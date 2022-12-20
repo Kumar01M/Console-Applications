@@ -8,3 +8,9 @@ Scorecard Manager
 
 Anonymous Q&A
   An user can ask his questions and also can answer to others.
+
+Contact-Manager
+  To store your contacts and manage them.
+ 
+Banking Application
+  Create accounts, make transactions.
