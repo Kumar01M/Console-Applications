@@ -1,7 +1,7 @@
 # Console-Applications
 
-Flight Ticket Reservation
- -  Flight ticket booking application. ✈️
+Flight Ticket Reservation ✈️
+ -  Flight ticket booking application. 
 
 Scorecard Manager 💯
  -  A cricket scorecard managing application to update scores in a scoreboard.
