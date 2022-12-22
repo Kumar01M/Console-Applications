@@ -22,7 +22,7 @@ public class TransactionsView {
 		while (true) {
 			System.out.println("Select operation");
 			int choice = input.inputChoice("\t{1} Withdraw Cash\n\t{2} Cash Deposit\n\t{3} Account to Account Transfer\n\t"
-										 + "{4} Transaction History");
+										 + "{4} Transaction History\n\t{5} Log out \n\t{6} Exit \n>>");
 			switch(choice) {
 			case 1:
 				controller.withdrawCash(account);
@@ -36,8 +36,15 @@ public class TransactionsView {
 			case 4:
 				controller.transactionHistory(account);
 				break;
-			default:
+			case 5:
+				System.out.println("Logging out");
+				return;
+			case 6:
+				System.out.println("Thank you for banking with us.");
 				System.exit(0);
+			default:
+				System.out.println("Invalid input");
+				break;
 			}
 		}
 	}
