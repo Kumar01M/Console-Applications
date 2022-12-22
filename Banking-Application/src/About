@@ -1,0 +1,6 @@
+# Banking Application using Java
+
+1 -> Customers can create account with username and password, a customer id and an account number will be generated with an initial of 10000.
+2 -> Password is encrypted with simple caesar cipher.
+3 -> Customers can make transactions by logging in with their customer id and password.
+4 -> transactions like withdrawal, deposits and tranfering money are made with transaction history
