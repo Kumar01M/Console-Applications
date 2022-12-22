@@ -58,10 +58,10 @@ public class CustomerModel {
 	}
 	
 	public String toString() {
-		return "\n\t\tACCOUNT STATEMENT \n"
-				+  "\t      Name - "+this.username+"\n"
-				+"\t  Account No - "+this.accountNumber+"\n"
-				+"\t Customer Id - "+this.customerId+"\n";
+		return "\n\tACCOUNT STATEMENT \n"
+				+  "\tName      - "+this.username+"\n"
+				+"\tAccount No  - "+this.accountNumber+"\n"
+				+"\tCustomer Id - "+this.customerId+"\n";
 	}
 	
 	
