@@ -11,7 +11,6 @@ public class AccountModel {
 	public AccountModel(long customerId, long accountNumber) {
 		this.customerId = customerId;
 		this.accountNumber = accountNumber;
-		accountBalance = 10000;
 		transactionList = new ArrayList<>();
 	}
 
