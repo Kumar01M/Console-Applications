@@ -22,6 +22,7 @@ public class App {
 		while(true) {
 			System.out.println("{1} Add Customer {2} Make Transactions {3} Exit");
 			int choice = input.inputChoice(">> ");
+			System.out.println();
 			switch (choice) {
 			case 1:
 				customer = accountsController.addNewCustomer();

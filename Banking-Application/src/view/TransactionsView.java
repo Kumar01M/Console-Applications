@@ -3,43 +3,47 @@ package view;
 import controller.TransactionsController;
 import controller.Validator;
 import model.AccountModel;
-import model.BankDatabase;
 import model.CustomerModel;
 
 public class TransactionsView {
 	Validator input;
-	TransactionsController controller;
-	BankDatabase db;
-	
+	TransactionsController transactionsController;
+
 	public TransactionsView() {
-		controller = new TransactionsController(this);
+		transactionsController = new TransactionsController(this);
 		input = Validator.getInstance();
-		db = BankDatabase.getInstance();
 	}
-	
+
 	public void transactionsMenu(CustomerModel customer, AccountModel account) {
-		System.out.println("Welcome "+customer.getUsername()+ "\tAccount balance: " +account.getAccountBalance());
+		System.out.println("\nWelcome " + customer.getUsername() + "\tAccount balance: " + account.getAccountBalance());
 		while (true) {
 			System.out.println("Select operation");
-			int choice = input.inputChoice("\t{1} Withdraw Cash\n\t{2} Cash Deposit\n\t{3} Account to Account Transfer\n\t"
-										 + "{4} Transaction History\n\t{5} Log out \n\t{6} Exit \n>>");
-			switch(choice) {
+			int choice = input
+					.inputChoice("\t{1} Withdraw Cash\n\t{2} Cash Deposit\n\t{3} Account to Account Transfer\n\t"
+							+ "{4} Transaction History\n\t"
+							+ "{5} Change Password \n\t{6} Log out \n\t{7} Exit \n>>");
+			
+			switch (choice) {
 			case 1:
-				controller.withdrawCash(account);
+				transactionsController.withdrawCash(account);
 				break;
 			case 2:
-				controller.depositCash(account);
+				if (transactionsController.depositCash(account));
+					System.out.println("Cash deposited successfully");
 				break;
 			case 3:
-				controller.transferMoney(account);
+				transactionsController.transferMoney(account);
 				break;
 			case 4:
-				controller.transactionHistory(account);
+				transactionsController.transactionHistory(account);
 				break;
 			case 5:
-				System.out.println("Logging out");
-				return;
+				transactionsController.changePassword(account);
+				break;
 			case 6:
+				System.out.println("Logging out...\n");
+				return;
+			case 7:
 				System.out.println("Thank you for banking with us.");
 				System.exit(0);
 			default:
