@@ -63,7 +63,7 @@ public class Validator {
 	}
 	
 	public boolean validatePassword(String password) {
-		return password.matches("^(?=.*[0-9]){2,}(?=.*[a-z]){2,}(?=.*[A-Z]){2,}.{6,8}$");
+		return password.matches("^(?=.*[0-9]{2})(?=.*[a-z]{2})(?=.*[A-Z]{2}).{6,8}$");
 	}
 	
 	public boolean validateName(String name) {
