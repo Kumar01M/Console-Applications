@@ -8,3 +8,6 @@ Anonymous Q&A ❓
 
 Banking Application 🏦
  -  Create accounts, make transactions.
+ 
+User Management CRUD 👤
+ - Done this application to understand working with crud applications.
